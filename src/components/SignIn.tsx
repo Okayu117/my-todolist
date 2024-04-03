@@ -8,7 +8,7 @@ const SignIn = () => {
 
   const SignInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    auth.signInWithPopup(provider)
+    signInWithPopup(auth, provider)
   }
 
   return (
