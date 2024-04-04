@@ -3,3 +3,18 @@
   justify-content: center;
   gap: 100px;
 }
+
+.list-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.list-row p {
+  margin: 0;
+}
+
+.incomplete-area,
+.complete-area {
+  text-align: left;
+}

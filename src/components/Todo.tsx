@@ -2,16 +2,22 @@ import React, { useEffect, useState } from 'react'
 import './Todo.css'
 import SignOut from './SignOut'
 import { db } from '../firebase'
-import { collection, getDocs } from "firebase/firestore"; 
+import { collection, getDocs } from "firebase/firestore";
 
 const Todo = () => {
-  const [todos, setTodos] = useState([])
+  type Todo = {
+    title: string,
+    id: number,
+    status: string,
+    detail: string
+  }
 
-  const todoData = collection(db, 'todoList-row')
+  const [todos, setTodos] = useState<Todo[]>([])
+
+  const todoData = collection(db, 'todoList-row');
   getDocs(todoData).then((querySnapshot) => {
-    // console.log(querySnapshot.docs.map((doc) => doc.data()))
-    setTodos(querySnapshot.docs.map((doc) => doc.data()))
-  })
+    setTodos(querySnapshot.docs.map((doc) => doc.data()));
+  });
 
 
   return (
