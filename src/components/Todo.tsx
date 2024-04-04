@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Todo.css'
+import SignOut from './SignOut'
+import { db } from '../firebase'
+import { collection, getDocs } from "firebase/firestore"; 
 
 const Todo = () => {
+  const [todos, setTodos] = useState([])
+
+  const todoData = collection(db, 'todoList-row')
+  getDocs(todoData).then((querySnapshot) => {
+    // console.log(querySnapshot.docs.map((doc) => doc.data()))
+    setTodos(querySnapshot.docs.map((doc) => doc.data()))
+  })
+
+
   return (
     <>
       <h1>TODOリスト</h1>
@@ -34,6 +46,7 @@ const Todo = () => {
           </ul>
         </div>
       </div>
+      <SignOut />
     </>
   )
 }

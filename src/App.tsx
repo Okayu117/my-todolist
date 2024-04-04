@@ -3,6 +3,7 @@ import SignIn from './components/SignIn';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth }  from './firebase';
 import Todo from './components/Todo';
+import SignOut from './components/SignOut';
 
 
 
