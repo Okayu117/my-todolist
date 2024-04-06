@@ -3,6 +3,9 @@ import './Todo.css'
 import SignOut from './SignOut'
 import { db } from '../firebase'
 import { collection, getDocs } from "firebase/firestore";
+import { title } from 'process';
+import InputTodo from './InputTodo';
+import InComplete from './InComplete';
 
 const Todo = () => {
   type Todo = {
@@ -16,29 +19,25 @@ const Todo = () => {
 
   const todoData = collection(db, 'todoList-row');
   getDocs(todoData).then((querySnapshot) => {
-    setTodos(querySnapshot.docs.map((doc) => doc.data()));
+    setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo));
   });
 
 
   return (
     <>
       <h1>TODOリスト</h1>
-      <div className="input-area">
-        <input placeholder="TODOを入力" />
-        <button>追加</button>
-      </div>
+      <InputTodo />
+      {/* {todos.map((todo) => {
+        <InputTodo
+          title={todo.title}
+          id={todo.id}
+          status={todo.status}
+          detail={todo.detail}
+        />
+      })} */}
       <div className="area-wrap">
         <div className="incomplete-area">
-          <p className="title">未完了のTODO</p>
-          <ul>
-            <li>
-              <div className="list-row">
-                <p>バナナ買う</p>
-                <button>完了</button>
-                <button>削除</button>
-              </div>
-            </li>
-          </ul>
+          <InComplete />
         </div>
         <div className="complete-area">
           <p className="title">完了したTODO</p>
