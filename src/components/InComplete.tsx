@@ -1,6 +1,16 @@
 import React from 'react'
+import TodoList from './TodoList'
 
-const InComplete = () => {
+type Todo = {
+  title: string,
+  id: number,
+  status: string,
+  detail: string
+}
+
+const InComplete = (props : Todo) => {
+  const {title,id,status,detail} = props
+
   return (
     <div>
       <p className="title">未完了のTODO</p>
