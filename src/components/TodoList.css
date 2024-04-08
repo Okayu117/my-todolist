@@ -18,3 +18,13 @@
 .complete-area {
   text-align: left;
 }
+
+.row-wrap{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.list-title {
+  padding: 0 !important;
+}

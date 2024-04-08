@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import './Todo.css'
+import './TodoList.css'
 import SignOut from './SignOut'
 import { db } from '../firebase'
 import { collection, getDocs } from "firebase/firestore";
 import { title } from 'process';
 import InputTodo from './InputTodo';
 import InComplete from './InComplete';
+import { DialogTitle, Select } from '@mui/material';
 
 const TodoList = () => {
   type Todo = {
@@ -21,12 +22,12 @@ const TodoList = () => {
   const [completeTodos, setCompleteTodos] = useState<Todo[]>([])
 
 
-  const todoData = collection(db, 'todoList-row');
-  getDocs(todoData).then((querySnapshot) => {
-    setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo));
-  });
-
-
+  useEffect(() => {
+    const todoData = collection(db, 'todoList-row');
+    getDocs(todoData).then((querySnapshot) => {
+      setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo));
+    });
+  }, [])
 
 
   // React.ChangeEvent=フォームの値が変更された時に発生するイベントに関連するオブジェクト
@@ -48,20 +49,26 @@ const TodoList = () => {
   return (
     <>
       <h1>TODOリスト</h1>
-      <InputTodo
-        todoText={todoText}
-        onChangeTodoText={onChangeTodoText}
-        onClickAdd={onClickAdd}
-      />
+      <div className='input-area'>
+        <InputTodo
+          todoText={todoText}
+          onChangeTodoText={onChangeTodoText}
+          onClickAdd={onClickAdd}
+        />
+      </div>
+      <div className="list-body">
       {todos.map(({title,id,status,detail}) => (
         <div key={id}>
-          <p>{title}</p>
-          <p>{id}</p>
-          <p>{status}</p>
-          <p>{detail}</p>
+          <div className="row-wrap">
+            <DialogTitle className='list-title'>{title}<span>{id}</span></DialogTitle>
+            <select>
+              <option>{status}</option>
+            </select>
+          </div>
+          <p>メモ：{detail}</p>
         </div>
       ))}
-      {/* {console.log(todos)} */}
+      </div>
       <div className="area-wrap">
         <div className="incomplete-area">
           {/* <InComplete /> */}
