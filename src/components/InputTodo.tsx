@@ -10,21 +10,20 @@ type Todo = {
 }
 
 type Props = {
-  todoText: Todo,
-  onChangeTodoText: React.ChangeEvent<HTMLInputElement>,
-  onClickAdd: void
+  todoText: string,
+  onChangeTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onClickAdd: () => void
 }
 
 const InputTodo = (props : Props) => {
-  const {onChange, todoText, onClickAdd} = props
+  const { onChangeTodoText, todoText, onClickAdd } = props
 
   return (
     <div className="input-area">
       <Input
-      placeholder="TODOを入力"
-      onChange={onChangeTodoText}
-      value={todoText}
-
+        placeholder="TODOを入力"
+        onChange={onChangeTodoText}
+        value={todoText}
       />
       <Button onClick={onClickAdd}>追加</Button>
     </div>

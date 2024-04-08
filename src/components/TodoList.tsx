@@ -10,14 +10,14 @@ import InComplete from './InComplete';
 const TodoList = () => {
   type Todo = {
     title: string,
-    id: number,
+    id: string,
     status: string,
     detail: string
   }
 
   const [todos, setTodos] = useState<Todo[]>([])
   const [incompleteTodos, setIncompleteTodos] = useState<Todo[]>([])
-  const [todoText, setTodoText] = useState([])
+  const [todoText, setTodoText] = useState<string>("")
   const [completeTodos, setCompleteTodos] = useState<Todo[]>([])
 
 
@@ -31,10 +31,15 @@ const TodoList = () => {
 
   // React.ChangeEvent=フォームの値が変更された時に発生するイベントに関連するオブジェクト
   // <HTMLInputElement>=input要素に関するプロパティやメソッドを提供するHTML DOM API
-  const onChangeTodoText = (e : React.ChangeEvent<HTMLInputElement>) : Todo => setTodoText(e.target.value)
+  const onChangeTodoText = (e : React.ChangeEvent<HTMLInputElement>) => setTodoText(e.target.value)
   const onClickAdd = () => {
     // if (todoText === []) return
-    const newTodos :Todo[]= [...incompleteTodos, todoText];
+    const newTodos :Todo[]= [...incompleteTodos, {
+      title: todoText,
+      id: crypto.randomUUID() ,
+      status: "incomplete",
+      detail: ""
+    }];
     setIncompleteTodos(newTodos)
     setTodoText('')
   }
@@ -45,8 +50,8 @@ const TodoList = () => {
       <h1>TODOリスト</h1>
       <InputTodo
         todoText={todoText}
-        onChange={onChangeTodoText}
-        onClick={onClickAdd}
+        onChangeTodoText={onChangeTodoText}
+        onClickAdd={onClickAdd}
       />
       {todos.map(({title,id,status,detail}) => (
         <div key={id}>
