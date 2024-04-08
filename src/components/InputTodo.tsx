@@ -16,7 +16,7 @@ type Props = {
 }
 
 const InputTodo = (props : Props) => {
-  const {onChange21t, todoText, onClickAdd} = props
+  const {onChange, todoText, onClickAdd} = props
 
   return (
     <div className="input-area">

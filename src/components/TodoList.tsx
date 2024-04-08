@@ -31,7 +31,7 @@ const TodoList = () => {
 
   // React.ChangeEvent=フォームの値が変更された時に発生するイベントに関連するオブジェクト
   // <HTMLInputElement>=input要素に関するプロパティやメソッドを提供するHTML DOM API
-  const onChangeTodoText = (e : 1) : Todo => setTodoText(e.target.value)
+  const onChangeTodoText = (e : React.ChangeEvent<HTMLInputElement>) : Todo => setTodoText(e.target.value)
   const onClickAdd = () => {
     // if (todoText === []) return
     const newTodos :Todo[]= [...incompleteTodos, todoText];
