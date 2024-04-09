@@ -6,7 +6,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { title } from 'process';
 import InputTodo from './InputTodo';
 import InComplete from './InComplete';
-import { DialogTitle, Select } from '@mui/material';
+import { Box, DialogTitle, FormControl, Grid, InputLabel, MenuItem, NativeSelect, Select, Stack, Typography } from '@mui/material';
+import SelectInput from '@mui/material/Select/SelectInput';
 
 const TodoList = () => {
   type Todo = {
@@ -19,6 +20,7 @@ const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [incompleteTodos, setIncompleteTodos] = useState<Todo[]>([])
   const [todoText, setTodoText] = useState<string>("")
+  const [detailText, setDetailText] = useState<string>("")
   const [completeTodos, setCompleteTodos] = useState<Todo[]>([])
 
 
@@ -33,58 +35,59 @@ const TodoList = () => {
   // React.ChangeEvent=フォームの値が変更された時に発生するイベントに関連するオブジェクト
   // <HTMLInputElement>=input要素に関するプロパティやメソッドを提供するHTML DOM API
   const onChangeTodoText = (e : React.ChangeEvent<HTMLInputElement>) => setTodoText(e.target.value)
+  const onChangeDetailText = (e : React.ChangeEvent<HTMLInputElement>) => setDetailText(e.target.value)
+
   const onClickAdd = () => {
-    // if (todoText === []) return
+    if (todoText === "") return
     const newTodos :Todo[]= [...incompleteTodos, {
       title: todoText,
       id: crypto.randomUUID() ,
       status: "incomplete",
-      detail: ""
+      detail: detailText
     }];
     setIncompleteTodos(newTodos)
     setTodoText('')
+    setDetailText('')
   }
+
+
 
 
   return (
     <>
-      <h1>TODOリスト</h1>
-      <div className='input-area'>
+      <Typography variant="h5">TODOリスト</Typography>
         <InputTodo
           todoText={todoText}
+          detailText={detailText}
           onChangeTodoText={onChangeTodoText}
+          onChangeDetailText={onChangeDetailText}
           onClickAdd={onClickAdd}
         />
-      </div>
-      <div className="list-body">
+        <Grid container alignItems='center' justifyContent='center' direction="column">
       {todos.map(({title,id,status,detail}) => (
         <div key={id}>
-          <div className="row-wrap">
             <DialogTitle className='list-title'>{title}<span>{id}</span></DialogTitle>
-            <select>
-              <option>{status}</option>
-            </select>
-          </div>
-          <p>メモ：{detail}</p>
+            <Typography>メモ：{detail}</Typography>
+            <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
+              <NativeSelect
+                defaultValue={1}
+                // inputProps={{
+                //   name: 'status',
+                //   id: 'status',
+                // }}
+              >
+                <option value={1}>未完了</option>
+                <option value={2}>作業中</option>
+                <option value={3}>完了</option>
+              </NativeSelect>
+            </FormControl>
         </div>
       ))}
-      </div>
-      <div className="area-wrap">
-        <div className="incomplete-area">
-          {/* <InComplete /> */}
-        </div>
-        <div className="complete-area">
-          <p className="title">完了したTODO</p>
-          <ul>
-            <li>
-              <div className="list-row">
-                <p>銀行行く</p>
-                <button>戻す</button>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </Grid>
+
+
+
+
       <SignOut />
     </>
   )
