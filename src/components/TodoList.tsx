@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import './TodoList.css'
 import SignOut from './SignOut'
 import { db } from '../firebase'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { title } from 'process';
 import InputTodo from './InputTodo';
 import InComplete from './InComplete';
 import { DialogTitle, Select } from '@mui/material';
 
-const TodoList = () => {
+export const TodoList = () => {
   type Todo = {
     title: string,
     id: string,
-    status: string,
+    status: "完了" | "未完了" | "着手中",
     detail: string
   }
 
@@ -27,21 +27,34 @@ const TodoList = () => {
     getDocs(todoData).then((querySnapshot) => {
       setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo));
     });
+    console.log("todos", todos)
+    const incompleteData = todos.filter(todo => todo.status === "未完了")
+    setIncompleteTodos(incompleteData)
   }, [])
 
 
   // React.ChangeEvent=フォームの値が変更された時に発生するイベントに関連するオブジェクト
   // <HTMLInputElement>=input要素に関するプロパティやメソッドを提供するHTML DOM API
   const onChangeTodoText = (e : React.ChangeEvent<HTMLInputElement>) => setTodoText(e.target.value)
-  const onClickAdd = () => {
+  const onClickAdd = async () => {
     // if (todoText === []) return
-    const newTodos :Todo[]= [...incompleteTodos, {
+    // const newTodos :Todo[]= [...incompleteTodos, {
+    //   title: todoText,
+    //   id: crypto.randomUUID() ,
+    //   status: "未完了",
+    //   detail: ""
+    // }];
+
+    const newTodo = {
       title: todoText,
-      id: crypto.randomUUID() ,
-      status: "incomplete",
+      id: crypto.randomUUID(),
+      status: "未完了",
       detail: ""
-    }];
-    setIncompleteTodos(newTodos)
+    }
+
+    await setDoc(doc(db, "todoList-row", newTodo.id), newTodo);
+
+    // setIncompleteTodos(newTodos)
     setTodoText('')
   }
 
@@ -89,5 +102,3 @@ const TodoList = () => {
     </>
   )
 }
-
-export default TodoList
