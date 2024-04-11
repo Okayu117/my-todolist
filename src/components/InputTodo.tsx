@@ -14,7 +14,7 @@ type Props = {
   detailText: string,
   onChangeDetailText: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onChangeTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onClickAdd: () => void
+  onClickAdd: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void
 }
 
 const InputTodo = (props : Props) => {
