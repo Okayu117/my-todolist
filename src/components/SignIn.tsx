@@ -2,6 +2,8 @@ import React from 'react'
 import { auth } from '../firebase'
 import firebase from 'firebase/compat/app'
 import { signInWithPopup,GoogleAuthProvider } from 'firebase/auth'
+import { Button } from '@mui/material'
+import './SignIn.css'
 
 
 const SignIn = () => {
@@ -13,7 +15,7 @@ const SignIn = () => {
 
   return (
     <div className='sign-in'>
-      <button onClick={SignInWithGoogle}>ログイン</button>
+      <Button onClick={SignInWithGoogle}>ログイン</Button>
     </div>
   )
 }
