@@ -55,11 +55,11 @@ const TodoList = () => {
     setDetailText('')
   }
 
-  const TodoDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const todoDelete = (targetTodo:Todo,e :React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
-    const newTodos = incompleteTodos.filter((todo) => todo.id !== todo.id)
+    const newTodos =  incompleteTodos.filter((todo) => todo.id !== targetTodo.id)
     setIncompleteTodos(newTodos)
-  }
+    }
 
 
 
@@ -75,11 +75,11 @@ const TodoList = () => {
           onClickAdd={onClickAdd}
         />
         <Grid container alignItems='center' justifyContent='center' direction="column">
-      {todos.map(({title,id,detail}) => (
-        <div key={id}>
-            <DialogTitle className='list-title'>{title}</DialogTitle>
-            <Typography>ID:{id}</Typography>
-            <Typography>詳細:{detail}</Typography>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+            <DialogTitle className='list-title'>{todo.title}</DialogTitle>
+            <Typography>ID:{todo.id}</Typography>
+            <Typography>詳細:{todo.detail}</Typography>
             <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
               <NativeSelect
                 defaultValue={1}
@@ -93,7 +93,7 @@ const TodoList = () => {
                 <option value={3}>完了</option>
               </NativeSelect>
             </FormControl>
-            <Button onClick={TodoDelete}>削除</Button>
+            <Button onClick={(e:React.MouseEvent<HTMLElement, MouseEvent>)=>todoDelete(todo,e)}>削除</Button>
         </div>
       ))}
       </Grid>
