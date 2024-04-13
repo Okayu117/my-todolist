@@ -22,7 +22,11 @@ const TodoList = () => {
   const [incompleteTodos, setIncompleteTodos] = useState<Todo[]>([])
   const [todoText, setTodoText] = useState<string>("")
   const [detailText, setDetailText] = useState<string>("")
-  // const [completeTodos, setCompleteTodos] = useState<Todo[]>([])
+  const [isEditForm, setIsEditForm] = useState<boolean>(false)
+  const [newTodoText, setNewTodoText] = useState<string>("")
+  const [newDetailText, setNewDetailText] = useState<string>("")
+
+
 
   useEffect(() => {
     const todoData = collection(db, 'todoList-row');
@@ -61,6 +65,16 @@ const TodoList = () => {
     deleteDoc(doc(db, "todoList-row", id))
     }
 
+  const editFormOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
+    e.preventDefault()
+    setIsEditForm(true)
+    const newTodos:Todo[] = [...incompleteTodos].filter((todo) => todo.id === id)
+    console.log(newTodos)
+    const editTodo:any = todos.find((todo) => todo.id === id)
+    setNewTodoText(editTodo.title)
+    setNewDetailText(editTodo.detail)
+  }
+
 
 
 
@@ -73,6 +87,9 @@ const TodoList = () => {
           onChangeTodoText={onChangeTodoText}
           onChangeDetailText={onChangeDetailText}
           onClickAdd={onClickAdd}
+          isEditForm={isEditForm}
+          newTodoText={newTodoText}
+          newDetailText={newDetailText}
         />
         <Grid container alignItems='center' justifyContent='center' direction="column">
       {todos.map((todo) => (
@@ -93,7 +110,7 @@ const TodoList = () => {
                 <option value={3}>完了</option>
               </NativeSelect>
             </FormControl>
-            <Button>編集</Button>
+            <Button onClick={(e)=>editFormOpen(e,todo.id)}>編集</Button>
             <Button onClick={(e)=>todoDelete(e,todo.id)}>削除</Button>
         </div>
       ))}
