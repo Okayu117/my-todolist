@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './TodoList.css'
 import SignOut from './SignOut'
 import { db } from '../firebase'
-import { collection, getDocs, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { collection, deleteDoc, getDocs, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
 import { title } from 'process';
 import InputTodo from './InputTodo';
 import InComplete from './InComplete';
@@ -27,9 +27,10 @@ const TodoList = () => {
   useEffect(() => {
     const todoData = collection(db, 'todoList-row');
     const q = query(todoData, orderBy('serverTimestamp','desc'));
-    getDocs(q).then((querySnapshot) => {
-      setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo));
+    onSnapshot(q,(querySnapshot) => {
+      setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo))
     });
+
   }, [])
 
 
@@ -55,11 +56,10 @@ const TodoList = () => {
     setDetailText('')
   }
 
-  const TodoDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const todoDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:Todo["id"]) => {
     e.preventDefault()
-    const newTodos = incompleteTodos.filter((todo) => todo.id !== todo.id)
-    setIncompleteTodos(newTodos)
-  }
+    deleteDoc(doc(db, "todoList-row", id))
+    }
 
 
 
@@ -75,11 +75,11 @@ const TodoList = () => {
           onClickAdd={onClickAdd}
         />
         <Grid container alignItems='center' justifyContent='center' direction="column">
-      {todos.map(({title,id,detail}) => (
-        <div key={id}>
-            <DialogTitle className='list-title'>{title}</DialogTitle>
-            <Typography>ID:{id}</Typography>
-            <Typography>詳細:{detail}</Typography>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+            <DialogTitle className='list-title'>{todo.title}</DialogTitle>
+            <Typography>ID:{todo.id}</Typography>
+            <Typography>詳細:{todo.detail}</Typography>
             <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
               <NativeSelect
                 defaultValue={1}
@@ -93,7 +93,8 @@ const TodoList = () => {
                 <option value={3}>完了</option>
               </NativeSelect>
             </FormControl>
-            <Button onClick={TodoDelete}>削除</Button>
+            <Button>編集</Button>
+            <Button onClick={(e)=>todoDelete(e,todo.id)}>削除</Button>
         </div>
       ))}
       </Grid>
