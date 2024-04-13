@@ -56,9 +56,9 @@ const TodoList = () => {
     setDetailText('')
   }
 
-  const todoDelete = (e:any,todo:any) => {
+  const todoDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:Todo["id"]) => {
     e.preventDefault()
-    deleteDoc(doc(db, "todoList-row", todo.id))
+    deleteDoc(doc(db, "todoList-row", id))
     }
 
 
@@ -94,7 +94,7 @@ const TodoList = () => {
               </NativeSelect>
             </FormControl>
             <Button>編集</Button>
-            <Button onClick={(e)=>todoDelete(e,todo)}>削除</Button>
+            <Button onClick={(e)=>todoDelete(e,todo.id)}>削除</Button>
         </div>
       ))}
       </Grid>
