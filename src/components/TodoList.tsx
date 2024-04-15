@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './TodoList.css'
 import SignOut from './SignOut'
 import { db } from '../firebase'
-import { collection, deleteDoc, getDocs, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { collection, deleteDoc, getDocs, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { title } from 'process';
 import InputTodo from './InputTodo';
 import InComplete from './InComplete';
@@ -18,13 +18,14 @@ const TodoList = () => {
     detail: string
   }
 
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [incompleteTodos, setIncompleteTodos] = useState<Todo[]>([])
+  const [todoList, setTodoList] = useState<Todo[]>([])
   const [todoText, setTodoText] = useState<string>("")
   const [detailText, setDetailText] = useState<string>("")
   const [isEditForm, setIsEditForm] = useState<boolean>(false)
-  const [newTodoText, setNewTodoText] = useState<string>("")
-  const [newDetailText, setNewDetailText] = useState<string>("")
+  // const [newTodoText, setNewTodoText] = useState<string>("")
+  // const [newDetailText, setNewDetailText] = useState<string>("")
+  const [editTodoText, setEditTodoText] = useState<string>("")
+  const [editDetailText, setEditDetailText] = useState<string>("")
 
 
 
@@ -32,7 +33,7 @@ const TodoList = () => {
     const todoData = collection(db, 'todoList-row');
     const q = query(todoData, orderBy('serverTimestamp','desc'));
     onSnapshot(q,(querySnapshot) => {
-      setTodos(querySnapshot.docs.map((doc) => doc.data() as Todo))
+      setTodoList(querySnapshot.docs.map((doc) => doc.data() as Todo))
     });
 
   }, [])
@@ -42,6 +43,9 @@ const TodoList = () => {
   // <HTMLInputElement>=input要素に関するプロパティやメソッドを提供するHTML DOM API
   const onChangeTodoText = (e : React.ChangeEvent<HTMLInputElement>) => setTodoText(e.target.value)
   const onChangeDetailText = (e : React.ChangeEvent<HTMLInputElement>) => setDetailText(e.target.value)
+  const onChangeEditTodoText = (e : React.ChangeEvent<HTMLInputElement>) => setEditTodoText(e.target.value)
+  const onChangeEditDetailText = (e : React.ChangeEvent<HTMLInputElement>) => setEditDetailText(e.target.value)
+
 
   const onClickAdd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
@@ -54,8 +58,8 @@ const TodoList = () => {
     }
     setDoc(doc(db, "todoList-row", newTodo.id), newTodo);
     if (todoText === "") return
-    const newTodos :Todo[]= [...incompleteTodos, newTodo];
-    setIncompleteTodos(newTodos)
+    const newTodos :Todo[]= [...todoList, newTodo];
+    setTodoList(newTodos)
     setTodoText('')
     setDetailText('')
   }
@@ -68,11 +72,45 @@ const TodoList = () => {
   const editFormOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
     e.preventDefault()
     setIsEditForm(true)
-    const newTodos:Todo[] = [...incompleteTodos].filter((todo) => todo.id === id)
-    console.log(newTodos)
-    const editTodo:any = todos.find((todo) => todo.id === id)
-    setNewTodoText(editTodo.title)
-    setNewDetailText(editTodo.detail)
+    const newTodos:Todo[]= todoList.filter((todo) => todo.id !== id)
+    setTodoList(newTodos)
+    const editTodo:any = todoList.find((todo) => todo.id === id)
+    setEditTodoText(editTodo.title)
+    setEditDetailText(editTodo.detail)
+  }
+
+  // const onClickEdit = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
+  //   e.preventDefault()
+  //   const editTodo = {
+  //     title: todoText,
+  //     id: id,
+  //     status: "incomplete",
+  //     detail: detailText,
+  //     serverTimestamp: serverTimestamp()
+  //   }
+  //   setDoc(doc(db, "todoList-row", editTodo.id), editTodo);
+  //   const newTodos :Todo[]= [...todoList, editTodo];
+  //   setTodoList(newTodos)
+  //   setEditTodoText('')
+  //   setEditDetailText('')
+  // }
+
+  const onClickEdit = async (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
+    e.preventDefault()
+    const editTodoDoc = doc(db, "todoList-row", id);
+    const editTodo = {
+      title: editTodoText,
+      id: id,
+      status: "incomplete",
+      detail: editDetailText,
+      serverTimestamp: serverTimestamp()
+    }
+    await updateDoc(editTodoDoc, editTodo);
+    const newTodos :Todo[]= [...todoList, editTodo];
+    setTodoList(newTodos)
+    setEditTodoText('')
+    setEditDetailText('')
+    setIsEditForm(false)
   }
 
 
@@ -86,13 +124,17 @@ const TodoList = () => {
           detailText={detailText}
           onChangeTodoText={onChangeTodoText}
           onChangeDetailText={onChangeDetailText}
+          onChangEditTodoText={onChangeEditTodoText}
+          onChangeEditDetailText={onChangeEditDetailText}
           onClickAdd={onClickAdd}
+          onClickEdit={onClickEdit}
           isEditForm={isEditForm}
-          newTodoText={newTodoText}
-          newDetailText={newDetailText}
+          editTodoText={editTodoText}
+          editDetailText={editDetailText}
+          id={todoText}
         />
         <Grid container alignItems='center' justifyContent='center' direction="column">
-      {todos.map((todo) => (
+      {todoList.map((todo) => (
         <div key={todo.id}>
             <DialogTitle className='list-title'>{todo.title}</DialogTitle>
             <Typography>ID:{todo.id}</Typography>
@@ -115,7 +157,6 @@ const TodoList = () => {
         </div>
       ))}
       </Grid>
-
 
 
 

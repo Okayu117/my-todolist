@@ -8,9 +8,13 @@ type Props = {
   onChangeDetailText: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onChangeTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onClickAdd: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
+  onClickEdit: (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => void,
+  onChangEditTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onChangeEditDetailText: (event: React.ChangeEvent<HTMLInputElement>) => void,
   isEditForm: boolean
-  newTodoText: string,
-  newDetailText: string
+  editTodoText: string
+  editDetailText: string
+  id: string
 }
 
 const InputTodo = (props : Props) => {
@@ -19,10 +23,14 @@ const InputTodo = (props : Props) => {
     onChangeDetailText,
     todoText,
     onClickAdd,
+    onClickEdit,
+    onChangEditTodoText,
+    onChangeEditDetailText,
     detailText,
     isEditForm,
-    newTodoText,
-    newDetailText,
+    editTodoText,
+    editDetailText,
+    id
   } = props
 
 
@@ -38,15 +46,16 @@ const InputTodo = (props : Props) => {
       {isEditForm ? (
         <>
           <InputBase
-            onChange={onChangeTodoText}
-            value={newTodoText}
+            placeholder="タイトルを入力"
+            onChange={onChangEditTodoText}
+            value={editTodoText}
           />
           <InputBase
             placeholder="詳細を入力"
-            onChange={onChangeDetailText}
-            value={newDetailText}
+            onChange={onChangeEditDetailText}
+            value={editDetailText}
           />
-          <Button variant="contained" onClick={onClickAdd}>更新</Button>
+          <Button variant="contained" onClick={(e)=>onClickEdit(e,id)} disabled={!editTodoText}>更新</Button>
         </>
       ) : (
         <>
