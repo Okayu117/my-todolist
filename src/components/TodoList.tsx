@@ -6,7 +6,7 @@ import { collection, deleteDoc, getDocs, onSnapshot, orderBy, query, serverTimes
 import { title } from 'process';
 import InputTodo from './InputTodo';
 import InComplete from './InComplete';
-import { Box, Button, DialogTitle, FormControl, Grid, InputLabel, MenuItem, NativeSelect, Select, Stack, Typography } from '@mui/material';
+import { Box, Button, DialogTitle, FormControl, Grid, Input, InputLabel, MenuItem, NativeSelect, Select, Stack, Typography } from '@mui/material';
 import SelectInput from '@mui/material/Select/SelectInput';
 import { doc, setDoc } from "firebase/firestore";
 
@@ -22,10 +22,9 @@ const TodoList = () => {
   const [todoText, setTodoText] = useState<string>("")
   const [detailText, setDetailText] = useState<string>("")
   const [isEditForm, setIsEditForm] = useState<boolean>(false)
-  // const [newTodoText, setNewTodoText] = useState<string>("")
-  // const [newDetailText, setNewDetailText] = useState<string>("")
   const [editTodoText, setEditTodoText] = useState<string>("")
   const [editDetailText, setEditDetailText] = useState<string>("")
+  const [editingId, setEditingId] = useState<string>("")
 
 
 
@@ -77,34 +76,21 @@ const TodoList = () => {
     const editTodo:any = todoList.find((todo) => todo.id === id)
     setEditTodoText(editTodo.title)
     setEditDetailText(editTodo.detail)
+    setEditingId(editTodo.id)
   }
 
-  // const onClickEdit = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
-  //   e.preventDefault()
-  //   const editTodo = {
-  //     title: todoText,
-  //     id: id,
-  //     status: "incomplete",
-  //     detail: detailText,
-  //     serverTimestamp: serverTimestamp()
-  //   }
-  //   setDoc(doc(db, "todoList-row", editTodo.id), editTodo);
-  //   const newTodos :Todo[]= [...todoList, editTodo];
-  //   setTodoList(newTodos)
-  //   setEditTodoText('')
-  //   setEditDetailText('')
-  // }
 
   const onClickEdit = async (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
     e.preventDefault()
     const editTodoDoc = doc(db, "todoList-row", id);
-    const editTodo = {
+        const editTodo = {
       title: editTodoText,
       id: id,
       status: "incomplete",
       detail: editDetailText,
       serverTimestamp: serverTimestamp()
     }
+    // console.log(editTodo)
     await updateDoc(editTodoDoc, editTodo);
     const newTodos :Todo[]= [...todoList, editTodo];
     setTodoList(newTodos)
@@ -131,8 +117,16 @@ const TodoList = () => {
           isEditForm={isEditForm}
           editTodoText={editTodoText}
           editDetailText={editDetailText}
-          id={todoText}
+          id={editingId}
         />
+        {/* <Grid container alignItems='center' justifyContent='center' direction="row" gap={2}>
+          <Select value="未完了" size='small' onChange={(e)=>console.log(e.target.value)}>
+            <MenuItem value="未完了">未完了</MenuItem>
+            <MenuItem value="作業中">作業中</MenuItem>
+            <MenuItem value="完了">完了</MenuItem>
+          </Select>
+          <Button>絞り込み</Button>
+        </Grid> */}
         <Grid container alignItems='center' justifyContent='center' direction="column">
       {todoList.map((todo) => (
         <div key={todo.id}>

@@ -30,7 +30,7 @@ const InputTodo = (props : Props) => {
     isEditForm,
     editTodoText,
     editDetailText,
-    id
+    id,
   } = props
 
 
