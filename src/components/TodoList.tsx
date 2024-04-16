@@ -9,6 +9,7 @@ import InComplete from './InComplete';
 import { Box, Button, DialogTitle, FormControl, Grid, Input, InputLabel, MenuItem, NativeSelect, Select, Stack, Typography } from '@mui/material';
 import SelectInput from '@mui/material/Select/SelectInput';
 import { doc, setDoc } from "firebase/firestore";
+import { on } from 'events';
 
 const TodoList = () => {
   type Todo = {
@@ -71,8 +72,8 @@ const TodoList = () => {
   const editFormOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
     e.preventDefault()
     setIsEditForm(true)
-    const newTodos:Todo[]= todoList.filter((todo) => todo.id !== id)
-    setTodoList(newTodos)
+    // const newTodos:Todo[]= todoList.filter((todo) => todo.id !== id)
+    // setTodoList(newTodos)
     const editTodo:any = todoList.find((todo) => todo.id === id)
     setEditTodoText(editTodo.title)
     setEditDetailText(editTodo.detail)
@@ -83,7 +84,7 @@ const TodoList = () => {
   const onClickEdit = async (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
     e.preventDefault()
     const editTodoDoc = doc(db, "todoList-row", id);
-        const editTodo = {
+    const editTodo = {
       title: editTodoText,
       id: id,
       status: "incomplete",
@@ -92,11 +93,18 @@ const TodoList = () => {
     }
     // console.log(editTodo)
     await updateDoc(editTodoDoc, editTodo);
-    const newTodos :Todo[]= [...todoList, editTodo];
+    const newTodos = todoList.map((todo) => ({ ...todo }))
+    console.log(newTodos)
     setTodoList(newTodos)
     setEditTodoText('')
     setEditDetailText('')
     setIsEditForm(false)
+  }
+
+  const onClickEditClose = () => {
+    setIsEditForm(false)
+    setEditTodoText('')
+    setEditDetailText('')
   }
 
 
@@ -118,6 +126,7 @@ const TodoList = () => {
           editTodoText={editTodoText}
           editDetailText={editDetailText}
           id={editingId}
+          onClickEditClose={onClickEditClose}
         />
         {/* <Grid container alignItems='center' justifyContent='center' direction="row" gap={2}>
           <Select value="未完了" size='small' onChange={(e)=>console.log(e.target.value)}>

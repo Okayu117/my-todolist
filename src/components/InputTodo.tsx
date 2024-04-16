@@ -15,6 +15,7 @@ type Props = {
   editTodoText: string
   editDetailText: string
   id: string
+  onClickEditClose: () => void
 }
 
 const InputTodo = (props : Props) => {
@@ -31,6 +32,7 @@ const InputTodo = (props : Props) => {
     editTodoText,
     editDetailText,
     id,
+    onClickEditClose
   } = props
 
 
@@ -56,6 +58,7 @@ const InputTodo = (props : Props) => {
             value={editDetailText}
           />
           <Button variant="contained" onClick={(e)=>onClickEdit(e,id)} disabled={!editTodoText}>更新</Button>
+          <Button variant="contained" onClick={onClickEditClose}>更新をキャンセル</Button>
         </>
       ) : (
         <>
