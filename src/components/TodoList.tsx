@@ -25,6 +25,12 @@ const TodoList = () => {
   const [editTodoText, setEditTodoText] = useState<string>("")
   const [editDetailText, setEditDetailText] = useState<string>("")
   const [editingId, setEditingId] = useState<string>("")
+  const [editTodo, setEditTodo] = useState<Todo>({
+    title: "",
+    id: "",
+    status: "",
+    detail: "",
+  })
 
 
 
@@ -68,16 +74,22 @@ const TodoList = () => {
     deleteDoc(doc(db, "todoList-row", id))
     }
 
-  const editFormOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
-    e.preventDefault()
-    setIsEditForm(true)
-    const newTodos:Todo[]= todoList.filter((todo) => todo.id !== id)
-    setTodoList(newTodos)
-    const editTodo:any = todoList.find((todo) => todo.id === id)
-    setEditTodoText(editTodo.title)
-    setEditDetailText(editTodo.detail)
-    setEditingId(editTodo.id)
-  }
+    const editFormOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
+      e.preventDefault()
+      setIsEditForm(true)
+      // const newTodos:Todo[]= todoList.filter((todo) => todo.id !== id) // この行を削除またはコメントアウト
+      // setTodoList(newTodos) // この行を削除またはコメントアウト
+      const editTodo:any = todoList.find((todo) => todo.id === id)
+      setEditTodo({
+        title: editTodo.title,
+        id: editTodo.id,
+        status: editTodo.status,
+        detail: editTodo.detail,
+      })
+      setEditTodoText(editTodo.title)
+      setEditDetailText(editTodo.detail)
+      setEditingId(editTodo.id)
+    }
 
 
   const onClickEdit = async (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
@@ -92,8 +104,8 @@ const TodoList = () => {
     }
     // console.log(editTodo)
     await updateDoc(editTodoDoc, editTodo);
-    const newTodos :Todo[]= [...todoList, editTodo];
-    setTodoList(newTodos)
+    // const newTodos :Todo[]= [...todoList, editTodo];
+    // setTodoList(newTodos)
     setEditTodoText('')
     setEditDetailText('')
     setIsEditForm(false)
