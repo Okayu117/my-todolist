@@ -1,6 +1,4 @@
-import { Button, FormControl, Input, InputBase, InputLabel, MenuItem, Select, Stack } from '@mui/material'
-import React, { useState } from 'react'
-
+import { Button, InputBase, Stack } from '@mui/material'
 
 type Props = {
   todoText: string,
@@ -17,7 +15,7 @@ type Props = {
   id: string
 }
 
-const InputTodo = (props : Props) => {
+export const InputTodo = (props : Props) => {
   const {
     onChangeTodoText,
     onChangeDetailText,
@@ -76,5 +74,3 @@ const InputTodo = (props : Props) => {
     </>
   )
 }
-
-export default InputTodo

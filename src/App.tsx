@@ -1,9 +1,7 @@
-import './App.css';
-import SignIn from './components/SignIn';
+import { SignIn } from './components/SignIn';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth }  from './firebase';
-import Todo from './components/TodoList';
-import SignOut from './components/SignOut';
+import { TodoList } from './components/TodoList';
 
 
 
@@ -11,7 +9,7 @@ function App() {
   const [user] = useAuthState(auth);
   return (
     <div className="App">
-      {user ? <Todo /> : <SignIn />}
+      {user ? <TodoList /> : <SignIn />}
     </div>
   );
 }

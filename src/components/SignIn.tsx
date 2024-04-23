@@ -1,12 +1,8 @@
-import React from 'react'
 import { auth } from '../firebase'
-import firebase from 'firebase/compat/app'
 import { signInWithPopup,GoogleAuthProvider } from 'firebase/auth'
 import { Button } from '@mui/material'
-import './SignIn.css'
 
-
-const SignIn = () => {
+export const SignIn = () => {
 
   const SignInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -19,5 +15,3 @@ const SignIn = () => {
     </div>
   )
 }
-
-export default SignIn
