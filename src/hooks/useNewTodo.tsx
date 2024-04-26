@@ -8,7 +8,8 @@ export const useNewTodo = () => {
     title: string,
     id: string,
     status: string,
-    detail: string
+    detail: string,
+    serverTimestamp: any
   }
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [todoText, setTodoText] = useState<string>("")
@@ -27,9 +28,10 @@ export const useNewTodo = () => {
 
   const onClickAdd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
+    const randomId : string = Math.random().toString().slice(2,7)
     const newTodo = {
       title: todoText,
-      id: crypto.randomUUID() ,
+      id: randomId,
       status: "incomplete",
       detail: detailText,
       serverTimestamp: serverTimestamp()

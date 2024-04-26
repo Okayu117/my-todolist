@@ -1,4 +1,8 @@
-import { Button, InputBase, Stack } from '@mui/material'
+import { Button, InputBase, Input, TextField, Stack } from '@mui/material'
+import { ThemeProvider } from '@mui/material';
+import { theme } from '../theme/theme';
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 type Props = {
   todoText: string,
@@ -34,43 +38,53 @@ export const InputTodo = (props : Props) => {
 
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Stack
       direction="row"
       justifyContent="center"
       alignItems="center"
       spacing={2}
+      marginTop={3}
     >
       {isEditForm ? (
         <>
-          <InputBase
+          <TextField id="outlined-basic" variant="outlined" size="small"
             placeholder="タイトルを入力"
             onChange={onChangEditTodoText}
             value={editTodoText}
+            style={{ backgroundColor:'#dae9cb', borderRadius: '4px'}}
           />
-          <InputBase
+          <TextField id="outlined-basic" variant="outlined" size="small"
             placeholder="詳細を入力"
             onChange={onChangeEditDetailText}
             value={editDetailText}
+            style={{ backgroundColor:'#b6e0dc', borderRadius: '4px'}}
           />
           <Button variant="contained" onClick={(e)=>onClickEdit(e,id)} disabled={!editTodoText}>更新</Button>
         </>
       ) : (
         <>
-          <InputBase
+          <TextField id="outlined-basic" variant="outlined" size="small"
             placeholder="タイトルを入力"
             onChange={onChangeTodoText}
             value={todoText}
+            style={{ backgroundColor:'#dae9cb', borderRadius: '4px', outline: 'none'}}
+
           />
-          <InputBase
+          <TextField id="outlined-basic" variant="outlined" size="small"
             placeholder="詳細を入力"
             onChange={onChangeDetailText}
             value={detailText}
+            style={{ backgroundColor:'#b6e0dc', borderRadius: '4px', outline: 'none'}}
           />
-          <Button variant="contained" onClick={onClickAdd} disabled={!todoText}>追加</Button>
+          <Button variant="contained"
+          onClick={onClickAdd}
+          disabled={!todoText}
+          style={{ backgroundColor:'#f9ec93', borderRadius: '4px', color: '#000'}}
+          >追加</Button>
         </>
       )}
       </Stack>
-    </>
+    </ThemeProvider>
   )
 }

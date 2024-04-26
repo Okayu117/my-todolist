@@ -27,6 +27,9 @@ export const useEditTodo = () => {
   const todoDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:Todo["id"]) => {
     e.preventDefault()
     deleteDoc(doc(db, "todoList-row", id))
+    setEditDetailText('')
+    setEditTodoText('')
+    setIsEditForm(false)
     }
     const editFormOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
       e.preventDefault()

@@ -11,7 +11,11 @@ export const SignIn = () => {
 
   return (
     <div className='sign-in'>
-      <Button onClick={SignInWithGoogle}>ログイン</Button>
+      <Button
+      size='large'
+      onClick={SignInWithGoogle}
+      style={{ marginLeft:'auto', marginRight:'auto', display:'block', marginTop:'50vh', color:'#ffff', backgroundColor:'#c5e1a5'}}
+      >ログイン</Button>
     </div>
   )
 }
