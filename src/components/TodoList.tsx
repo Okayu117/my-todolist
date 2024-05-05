@@ -19,7 +19,7 @@ export const TodoList = () => {
 
 
   return (
-    <div style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', width: '100%', paddingTop:'20px',paddingBottom:'20px' }}>
+    <div style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', width: '100%', height: '100vh', paddingTop:'20px',paddingBottom:'20px' }}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Typography textAlign="center" variant="h5" marginTop={5}>TO-DO LIST</Typography>
