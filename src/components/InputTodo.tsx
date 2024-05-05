@@ -11,12 +11,16 @@ type Props = {
   onChangeTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onClickAdd: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
   onClickEdit: (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => void,
-  onChangEditTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onChangeEditDetailText: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onChangeEditTodo: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onChangeEditDetail: (event: React.ChangeEvent<HTMLInputElement>) => void,
   isEditForm: boolean
-  editTodoText: string
-  editDetailText: string
   id: string
+  editTodo: {
+    title: string,
+    id: string,
+    status: string,
+    detail: string
+  }
 }
 
 export const InputTodo = (props : Props) => {
@@ -26,13 +30,12 @@ export const InputTodo = (props : Props) => {
     todoText,
     onClickAdd,
     onClickEdit,
-    onChangEditTodoText,
-    onChangeEditDetailText,
+    onChangeEditTodo,
+    onChangeEditDetail,
     detailText,
     isEditForm,
-    editTodoText,
-    editDetailText,
     id,
+    editTodo
   } = props
 
 
@@ -50,17 +53,17 @@ export const InputTodo = (props : Props) => {
         <>
           <TextField id="outlined-basic" variant="outlined" size="small"
             placeholder="タイトルを入力"
-            onChange={onChangEditTodoText}
-            value={editTodoText}
+            onChange={onChangeEditTodo}
+            value={editTodo.title}
             style={{ backgroundColor:'#dae9cb', borderRadius: '4px'}}
           />
           <TextField id="outlined-basic" variant="outlined" size="small"
             placeholder="詳細を入力"
-            onChange={onChangeEditDetailText}
-            value={editDetailText}
+            onChange={onChangeEditDetail}
+            value={editTodo.detail}
             style={{ backgroundColor:'#b6e0dc', borderRadius: '4px'}}
           />
-          <Button variant="contained" onClick={(e)=>onClickEdit(e,id)} disabled={!editTodoText}>更新</Button>
+          <Button variant="contained" onClick={(e)=>onClickEdit(e,id)}>更新</Button>
         </>
       ) : (
         <>

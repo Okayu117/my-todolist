@@ -28,10 +28,10 @@ export const useNewTodo = () => {
 
   const onClickAdd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
-    const randomId : string = Math.random().toString().slice(2,7)
+    // const randomId : string = Math.random().toString().slice(2,7)
     const newTodo = {
       title: todoText,
-      id: randomId,
+      id: Math.random().toString().slice(2,7),
       status: "incomplete",
       detail: detailText,
       serverTimestamp: serverTimestamp()

@@ -14,7 +14,7 @@ import { useUnsplash } from '../hooks/useUnsplash';
 export const TodoList = () => {
 
   const {todoList, todoText, detailText, onChangeTodoText, onChangeDetailText, onClickAdd} = useNewTodo()
-  const {isEditForm, editTodoText, editDetailText, editingId, onChangeEditTodoText, onChangeEditDetailText, onClickEdit, editFormOpen, todoDelete} = useEditTodo()
+  const {isEditForm, editTodo, editingId, onChangeEditTodo, onChangeEditDetail, onClickEdit, editFormOpen, todoDelete} = useEditTodo()
   const {imageUrl, setImageUrl} = useUnsplash()
 
 
@@ -28,13 +28,12 @@ export const TodoList = () => {
           detailText={detailText}
           onChangeTodoText={onChangeTodoText}
           onChangeDetailText={onChangeDetailText}
-          onChangEditTodoText={onChangeEditTodoText}
-          onChangeEditDetailText={onChangeEditDetailText}
+          onChangeEditTodo={onChangeEditTodo}
+          onChangeEditDetail={onChangeEditDetail}
           onClickAdd={onClickAdd}
           onClickEdit={onClickEdit}
           isEditForm={isEditForm}
-          editTodoText={editTodoText}
-          editDetailText={editDetailText}
+          editTodo={editTodo}
           id={editingId}
         />
         <Grid container
