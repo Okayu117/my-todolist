@@ -1,12 +1,8 @@
-import React from 'react'
 import { auth } from '../firebase'
-import firebase from 'firebase/compat/app'
 import { signInWithPopup,GoogleAuthProvider } from 'firebase/auth'
 import { Button } from '@mui/material'
-import './SignIn.css'
 
-
-const SignIn = () => {
+export const SignIn = () => {
 
   const SignInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -15,9 +11,11 @@ const SignIn = () => {
 
   return (
     <div className='sign-in'>
-      <Button onClick={SignInWithGoogle}>ログイン</Button>
+      <Button
+      size='large'
+      onClick={SignInWithGoogle}
+      style={{ marginLeft:'auto', marginRight:'auto', display:'block', marginTop:'50vh', color:'#ffff', backgroundColor:'#c5e1a5'}}
+      >ログイン</Button>
     </div>
   )
 }
-
-export default SignIn

@@ -1,13 +1,13 @@
 import { Button } from '@mui/material'
-import React from 'react'
 import { auth } from '../firebase'
 
-const SignOut = () => {
+export const SignOut = () => {
   return (
     <div>
-      <Button onClick={()=>auth.signOut()}>サインアウト</Button>
+      <Button
+      onClick={()=>auth.signOut()}
+      style={{ marginLeft:'auto', marginRight:'auto', display:'block', color:'#ffff', backgroundColor:'#e59fad'}}
+      >サインアウト</Button>
     </div>
   )
 }
-
-export default SignOut
