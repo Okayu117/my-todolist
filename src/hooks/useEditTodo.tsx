@@ -56,7 +56,6 @@ export const useEditTodo = () => {
     }
   const onClickEdit = async (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
     e.preventDefault()
-    console.log(id)
     const editTodoDoc = doc(db, "todoList-row", id);
     const newTodo = {
       title: editTodo.title,
