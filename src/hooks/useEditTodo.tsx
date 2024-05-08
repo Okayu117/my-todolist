@@ -12,8 +12,6 @@ type Todo = {
 
 export const useEditTodo = () => {
   const [isEditForm, setIsEditForm] = useState<boolean>(false)
-  const [editTodoText, setEditTodoText] = useState<string>("")
-  // const [editDetail, setEditDetailText] = useState<string>("")
   const [editingId, setEditingId] = useState<string>("")
   const [editTodo, setEditTodo] = useState<Todo>({
     title: "",
@@ -58,6 +56,7 @@ export const useEditTodo = () => {
     }
   const onClickEdit = async (e: React.MouseEvent<HTMLElement, MouseEvent>,id:string) => {
     e.preventDefault()
+    console.log(id)
     const editTodoDoc = doc(db, "todoList-row", id);
     const newTodo = {
       title: editTodo.title,

@@ -63,7 +63,7 @@ export const InputTodo = (props : Props) => {
             value={editTodo.detail}
             style={{ backgroundColor:'#b6e0dc', borderRadius: '4px'}}
           />
-          <Button variant="contained" onClick={(e)=>onClickEdit(e,id)}>更新</Button>
+          <Button variant="contained" onClick={(e)=>onClickEdit(e,editTodo.id)}>更新</Button>
         </>
       ) : (
         <>
