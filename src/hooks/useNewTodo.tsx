@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { db } from '../firebase'
 import { collection, onSnapshot, orderBy, query, serverTimestamp, doc, setDoc } from "firebase/firestore";
 
-
 export const useNewTodo = () => {
   type Todo = {
     title: string,
